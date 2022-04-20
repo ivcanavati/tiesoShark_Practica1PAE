@@ -36,7 +36,9 @@ const nombre = req.query.nombre;
   var condition = nombre ? { nombre: { $regex: new RegExp(nombre), $options: "i" } } : {}; //Utilizamos la expresion regular case insensitive para que traiga todo 
   Proyecto.find(condition)
     .then(data => {
-      res.send(data);
+      if (!data)
+      res.status(404).send({ message: "No se encontro ningun proyecto."});
+    else res.send(data);
     })
     .catch(err => {
       res.status(500).send({
